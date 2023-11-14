@@ -1,0 +1,166 @@
+// New Version
+
+const SetOptionNull =  () => {
+  for(let i = 1; i <= 50; i++ ) {
+    localStorage.setItem(`e${i}`, null)
+  }  
+}
+
+SetOptionNull()
+
+
+const content = document.getElementById("content");
+
+class ExamQuestions {
+    
+    constructor() {
+      this.data = [];
+      this.currentIndex = 0;
+      this.template = null;
+      this.answers =  []
+      this.name = ""
+  
+      // DOM elements
+      this.content = document.getElementById('content');
+      this.nextButton = document.getElementById('next');
+      this.prevButton = document.getElementById('prev');
+      this.submit = document.getElementById("submit");
+
+      
+
+  
+      // Event listeners
+      this.nextButton.addEventListener('click', this.nextQuestion.bind(this));
+      this.prevButton.addEventListener('click', this.prevQuestion.bind(this));
+      this.submit.addEventListener("click", this.submitAnswers.bind(this))
+      
+
+    }
+
+  
+    async loadQuestions() {
+      try {
+        const response = await fetch('ques.json');
+        this.data = await response.json();
+        this.displayQuestion()
+      } catch (error) {
+        console.error('Error loading questions:', error);
+      }
+    }
+
+    setValue(key, value) {
+      localStorage.setItem(key, value)
+    }
+
+    setChosenChecked(key) { //key is same with the question name
+      let value = localStorage.getItem(key)
+      let currentQuesOptions = document.getElementsByName(key)
+      
+      if(value != "null") {
+        currentQuesOptions.forEach(option => {
+          if (option.value == value) {
+            option.setAttribute("checked", true)
+          }
+        })
+      }
+    }
+  
+    nextQuestion() {
+      if (this.currentIndex < this.data.length - 1) {
+        this.currentIndex++;
+        this.displayQuestion();
+        
+      }
+    }
+  
+    prevQuestion() {
+      if (this.currentIndex > 0) {
+        this.currentIndex--;
+        this.displayQuestion();
+      }
+    }
+  
+    displayQuestion() {
+      const question = this.data[this.currentIndex];
+      this.template = `
+        <div class="exam__questions">
+          <div><h6 class="question__number">Question ${question.tid}</h6></div>
+          <p class="question__text">${question.qst}</p>
+          <hr>
+          <div class="options">
+            ${this.generateOptionsHTML()}
+          </div>
+        </div>
+      `;
+  
+      this.content.innerHTML = this.template;
+      this.name = this.data[this.currentIndex].name
+      
+      
+      let currentQuesOptions = document.getElementsByName(`${this.name}`)
+      currentQuesOptions.forEach(option => {
+        option.addEventListener("change", this.getOption.bind(this))
+      })
+      this.setChosenChecked(this.name)
+    }
+
+    async submitAnswers() {
+        let ans = [] // ["building", 100001, 23e3]
+        for(let i = 1; i <= 50; i++) {
+          let value = localStorage.getItem(`e${i}`)
+          ans.push(value)
+        }
+
+        console.log(ans)
+        // try{
+        //   const response = await fetch()
+        //   const data = await response.json()
+        // }catch(err) {
+
+        // }
+        
+      }
+
+    
+  
+    generateOptionsHTML() {
+        const options = `
+        <label for="option1__ques${this.data[this.currentIndex].tid}" class="option lbl__option__1">
+            <span id="option1__detail">${this.data[this.currentIndex].opt1}</span> 
+            <input type="radio" name="${this.data[this.currentIndex].name}" id="option1__ques${this.data[this.currentIndex].tid}" class="radio__option" value="${this.data[this.currentIndex].opt1}">
+        </label>
+        <label for="option2__ques${this.data[this.currentIndex].tid}" class="option" class="option lbl__option__2">
+            <span id="option2__detail">${this.data[this.currentIndex].opt2}</span>
+            <input type="radio" name="${this.data[this.currentIndex].name}" id="option2__ques${this.data[this.currentIndex].tid}" class="radio__option" value="${this.data[this.currentIndex].opt2}">
+        </label>
+        <label for="option3__ques${this.data[this.currentIndex].tid}" class="option" class="option lbl__option__3">
+            <span id="option3__detail">${this.data[this.currentIndex].opt3}</span>
+            <input type="radio" name="${this.data[this.currentIndex].name}" id="option3__ques${this.data[this.currentIndex].tid}" class="radio__option" value="${this.data[this.currentIndex].opt3}">
+        </label>
+        <label for="option4__ques${this.data[this.currentIndex].tid}" class="option" class="option lbl__option__4">
+            <span id="optio4__detail">${this.data[this.currentIndex].opt4}</span>
+            <input type="radio" name="${this.data[this.currentIndex].name}" id="option4__ques${this.data[this.currentIndex].tid}" class="radio__option" value="${this.data[this.currentIndex].opt4}">
+        </label>
+        
+        `
+    return options
+    }
+
+
+
+    /*
+    
+      0
+      [1, 2,3 , 4,5, 6]
+    */
+
+
+    getOption(e) {
+      let name = e.target.name
+      let value = e.target.value
+      this.setValue(name, value)
+    }
+  }
+  
+  const exam = new ExamQuestions();
+  exam.loadQuestions();

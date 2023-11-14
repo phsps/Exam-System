@@ -1,0 +1,74 @@
+/* From cssbuttons.io by @adamgiebl */
+
+.prev__next{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+
+
+.cssbuttons-io-button {
+    background: #aca8ac;
+    color: #fcfbfc;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    padding: 0.35em;
+    padding-left: 1.2em;
+    font-size: 12px;
+    font-weight: 500;
+    border-radius: 0.9em;
+    border: none;
+    letter-spacing: 0.05em;
+    display: flex;
+    align-items: center;
+
+    overflow: hidden;
+    position: relative;
+    height: 1.8em;
+    padding-right: 3.3em;
+   }
+   
+   .cssbuttons-io-button .icon.next {
+    background: #fcfbfc;
+    margin-left: 1em;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 1.2em;
+    width: 2.2em;
+    border-radius: 0.7em;
+    box-shadow: 0.1em 0.1em 0.6em 0.2em #aca8ac;
+    right: 0.3em;
+    transition: all 0.3s;
+   }
+   
+   .cssbuttons-io-button:hover .icon.previous {
+    width: calc(100% - 0.6em);
+   }
+ 
+
+   .cssbuttons-io-button .icon.previous {
+    background: #fcfbfc;
+    margin-left: 1em;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 1.2em;
+    width: 2.2em;
+    border-radius: 0.7em;
+    box-shadow: 0.1em 0.1em 0.6em 0.2em #aca8ac;
+    left: -0.75em;
+    transition: all 0.3s;
+   }
+   
+   .cssbuttons-io-button:hover .icon.next {
+    width: calc(100% - 0.6em);
+   }
+
+   
+   .cssbuttons-io-button:active .icon {
+    transform: scale(0.95);
+   }
+   
