@@ -38,9 +38,10 @@ class ExamQuestions {
     }
 
   
-    async loadQuestions() {
+    async loadQuestions(sub, short) {
       try {
-        const response = await fetch('ques.json');
+
+        const response = await fetch(`ques.json`); //api/ques?sub=${sub}&short=${short}
         this.data = await response.json();
         this.displayQuestion()
       } catch (error) {
@@ -112,12 +113,24 @@ class ExamQuestions {
         }
 
         console.log(ans)
-        // try{
-        //   const response = await fetch()
-        //   const data = await response.json()
-        // }catch(err) {
+        try {
+          const response = await fetch('your-api-endpoint', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ answers: ans }),
+          });
+  
+          const data = await response.json();
+          for(let i = 1; i <=  ans.length; i++) {
+            localStorage.removeItem(`e${i}`)
+          }
 
-        // }
+          console.log(data);
+        } catch (err) {
+            console.error('Error:', err);
+        }
         
       }
 
@@ -163,4 +176,55 @@ class ExamQuestions {
   }
   
   const exam = new ExamQuestions();
-  exam.loadQuestions();
+  const searchParams = new URLSearchParams(window.location.search);
+
+  let sub = searchParams.get("sub")
+  let short = searchParams.get("short")
+
+  exam.loadQuestions(sub, short);
+
+  const body = document.querySelector("body");
+  function submitAnswersOnVisibilityChange() {
+      body.onkeydown = function () {
+          return false
+      }
+      document.addEventListener("visibilitychange", async function () {
+        
+          if (document.visibilityState === "hidden") {
+              await exam.submitAnswers()
+              swal({
+                  title: "Security Error",
+                  text: "You can't access the page anymore, you data has been submitted successfully",
+                  icon: "error",
+              }).then(() => {
+                  window.location = "dashboard.html"
+              })
+              
+          }
+      })
+  }
+  submitAnswersOnVisibilityChange()
+
+  const submitAnswersWhenTimeEnds =  () => {
+    var finishTime = new Date();
+    finishTime.setMinutes(finishTime.getMinutes() + 1)
+
+    var myFunc = setInterval(async function () {
+        var now = new Date().getTime();
+        var timeLeft = finishTime - now;
+        var minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((timeLeft) % (1000 * 60) / 1000);
+        document.getElementById("timer").innerHTML = `${minutes}:${seconds}`
+        if (seconds < 10) {
+            document.getElementById("timer").innerHTML = `${minutes}:0${seconds}`
+        }
+        if (timeLeft <= 0 ) {
+        clearInterval(myFunc);
+            document.getElementById("timer").innerHTML = ""
+            await exam.submitAnswers()
+            alert("Exam ended")
+    }
+    }, 1000)
+  }
+
+  submitAnswersWhenTimeEnds()

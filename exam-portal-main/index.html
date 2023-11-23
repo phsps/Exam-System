@@ -4,79 +4,75 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
     <link rel="stylesheet" href="./css/all.min.css">
     <link rel="stylesheet" href="./css/bootstrap.min.css">
     <link rel="stylesheet" href="./css/mdb.min.css">
-    <link rel="stylesheet" href="./css/prev&next.css">
-    <link rel="stylesheet" href="./css/examPage.css">
-    <title>Document</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <title>PHSPS</title>
+
 </head>
 <body>
 
+    
+    <div class="top__line"></div>
+
+    <!--Navbar -->
+<nav class="mb-1 navbar navbar-expand-lg navbar-light orange bg-light lighten-1">
     <div class="container">
-            
-
-        <div class="exam__content">
-            <div class="container">
-
-                <!-- This is the page navbar -->
-                <div class="exam__nav">
-                    <div class="exam__brand mt-4"><h6>Able Exam</h6></div>
-                    <div class="exam__details">
-                       <div class="exam__progress mt-4">
-                        <div id="myProgress">
-                            <div id="myBar"></div>
-                          </div>
-                       </div>
-                       <div>
-                        <button class="btn review__btn mt-3"> review</button>
-                       </div>
-                    <div class="vertical__line"></div>
-                    <div class="exam__timer mt-3"><i class="fas fa-clock"></i> <span class="timer__countdown"> 00:00 Min </span></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- This is where the exam questions are gonna be displayed -->
-
-            <div id="content"></div>
-            
-            
-
-            <!-- This contains the previous and next icons -->
-            <div class="prev__next mt-3">
-
-                <button class="cssbuttons-io-button mr-4 prev" id="prev"> <span class="pl-4">Previous</span>
-                    <div class="icon previous">
-                        <i class="fas fa-arrow-left text-dark"></i>
-                    </div>
-                  </button>
-
-
-                <button class="cssbuttons-io-button" id="next"> <span>Next</span>
-                    <div class="icon next">
-                      <i class="fas fa-arrow-right text-dark"></i>
-                    </div>
-                  </button>
-                  <button class="cssbuttons-io-button" id="submit"> <span>Submit</span>
-                    <div class="icon submit">
-                      <i class="fas fa-arrow-right text-dark"></i>
-                    </div>
-                  </button>
-            </div>
-            <!-- End of prev and next icons -->
-            
+        <a class="navbar-brand" href="#">Exam Portal </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-555"
+          aria-controls="navbarSupportedContent-555" aria-expanded="false" aria-label="Toggle navigation">
+          <i class="fas fa-bars"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent-555">
+            <!-- Search form -->
+        <div class="md-form mt-0 mx-auto">
+            <input class="form-control" type="text" placeholder="Search" id="searchDetails" aria-label="Search">
         </div>
-
+          <ul class="navbar-nav">
+            <li class="nav-item mr-4">
+              <a class="nav-link" href="#"><i class="fas fa-users"></i></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#"><i class="fa fa-bell"></i></a>
+            </li>
+          </ul>
+          <ul class="navbar-nav nav-flex-icons">
+            <li class="nav-item avatar">
+              <a class="nav-link p-0" href="#">
+                <img src="./images/avatar-5.webp" class="rounded-circle z-depth-0"
+                  alt="avatar image" height="35">
+              </a>
+            </li>
+          </ul>
+        </div>
     </div>
 
+  </nav>
+  <!--/.Navbar -->
 
-    
+  <div class="hero">
+      <button id="check_start" sub="Mathematics" short="mth">Mathematics</button>
+  </div>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
     <script src="./js/jquery.js"></script>
     <script src="./js/bootstrap.min.js"></script>
     <script src="./js/mdb.min.js"></script>
     <script src="./js/all.min.js"></script>
-    <script src="./js/main.js"></script>
+    <script src="./js/timer.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </body>
 </html>
