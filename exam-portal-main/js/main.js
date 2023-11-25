@@ -248,9 +248,9 @@ class ExamQuestions {
   }
   submitAnswersOnVisibilityChange()
 
-  const submitAnswersWhenTimeEnds =  () => {
+  const submitAnswersWhenTimeEnds =  (minutes) => {
     var finishTime = new Date();
-    finishTime.setMinutes(finishTime.getMinutes() + 1)
+    finishTime.setMinutes(finishTime.getMinutes() + minutes)
 
     var myFunc = setInterval(async function () {
         var now = new Date().getTime();
@@ -276,5 +276,5 @@ class ExamQuestions {
     }, 1000)
   }
 
-  submitAnswersWhenTimeEnds()
+  submitAnswersWhenTimeEnds(60)
 

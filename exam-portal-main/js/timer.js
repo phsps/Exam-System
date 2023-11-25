@@ -1,5 +1,5 @@
-let startTimeString = Date.parse("November 23, 2023 12  :20:00")
-let finishTimeString = Date.parse("November 23, 2023 16:50:00");
+let startTimeString = Date.parse("November 25, 2023 13:20:00")
+let finishTimeString = Date.parse("November 25, 2023 16:50:00");
 
 
 
@@ -35,10 +35,16 @@ const checkCanStart = (sub, short) => {
     }
 }
 
-let startBtn = document.getElementById("check_start")
+let startBtns = document.querySelectorAll("#check_start")
 
-let sub = startBtn.getAttribute("sub")
-let short = startBtn.getAttribute("short")
-startBtn.addEventListener("click", () => {
-    checkCanStart(sub, short)
+
+
+startBtns.forEach(startBtn => {
+    startBtn.addEventListener("click", () => {
+
+        let sub = startBtn.getAttribute("sub")
+        let short = startBtn.getAttribute("short")
+
+        checkCanStart(sub, short)
+    })
 })
