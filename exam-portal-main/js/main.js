@@ -25,6 +25,9 @@ class ExamQuestions {
       this.nextButton = document.getElementById('next');
       this.prevButton = document.getElementById('prev');
       this.submit = document.getElementById("submit");
+      this.trackers = document.querySelector(".trackers")
+
+
 
       
 
@@ -32,9 +35,7 @@ class ExamQuestions {
       // Event listeners
       this.nextButton.addEventListener('click', this.nextQuestion.bind(this));
       this.prevButton.addEventListener('click', this.prevQuestion.bind(this));
-      this.submit.addEventListener("click", this.submitAnswers.bind(this))
-      
-
+      this.submit.addEventListener("click", this.submitAnswers.bind(this));
     }
 
   
@@ -43,11 +44,31 @@ class ExamQuestions {
 
         const response = await fetch(`ques.json`); //api/ques?sub=${sub}&short=${short}
         this.data = await response.json();
-        this.displayQuestion()
+        if (this.data.length == 0) {
+
+        }else{
+          const question = this.data[this.currentIndex];
+
+          this.displayQuestion(question)
+          this.displayTrackers()
+          let allTracker = document.querySelectorAll(".box")
+          allTracker.forEach(tracker => {
+            tracker.addEventListener("click", (e) => {
+              let quesNo = tracker.getAttribute("no")
+              this.jumpToQuestion(e.target.value, quesNo)
+            })
+          })
+
+        }
+        
       } catch (error) {
         console.error('Error loading questions:', error);
       }
     }
+
+   
+
+    
 
     setValue(key, value) {
       localStorage.setItem(key, value)
@@ -60,16 +81,26 @@ class ExamQuestions {
       if(value != "null") {
         currentQuesOptions.forEach(option => {
           if (option.value == value) {
+            
             option.setAttribute("checked", true)
           }
         })
       }
     }
+
+    jumpToQuestion(value, quesNo) {
+      this.currentIndex = quesNo - 1 
+      const question = this.data[this.currentIndex]
+
+      this.displayQuestion(question)
+    }
   
     nextQuestion() {
       if (this.currentIndex < this.data.length - 1) {
         this.currentIndex++;
-        this.displayQuestion();
+        const question = this.data[this.currentIndex];
+     
+        this.displayQuestion(question);
         
       }
     }
@@ -77,12 +108,12 @@ class ExamQuestions {
     prevQuestion() {
       if (this.currentIndex > 0) {
         this.currentIndex--;
-        this.displayQuestion();
+        const question = this.data[this.currentIndex];
+        this.displayQuestion(question);
       }
     }
   
-    displayQuestion() {
-      const question = this.data[this.currentIndex];
+    displayQuestion(question) {
       this.template = `
         <div class="exam__questions">
           <div><h6 class="question__number">Question ${question.tid}</h6></div>
@@ -100,9 +131,17 @@ class ExamQuestions {
       
       let currentQuesOptions = document.getElementsByName(`${this.name}`)
       currentQuesOptions.forEach(option => {
+        
         option.addEventListener("change", this.getOption.bind(this))
       })
       this.setChosenChecked(this.name)
+    }
+
+    displayTrackers() {
+      for(let i = 1; i <= this.data.length; i++) {
+        this.tracker = `<button class="box" value="e${i}" id="tracker-e${i}" no="${i}">${i}</button>`
+        this.trackers.innerHTML += this.tracker
+      }
     }
 
     async submitAnswers() {
@@ -170,8 +209,11 @@ class ExamQuestions {
 
     getOption(e) {
       let name = e.target.name
-      let value = e.target.value
+      let value = e.target.value     
+
       this.setValue(name, value)
+      let tracker = document.getElementById(`tracker-${name}`)
+      tracker.classList.add("checked")
     }
   }
   
@@ -184,6 +226,7 @@ class ExamQuestions {
   exam.loadQuestions(sub, short);
 
   const body = document.querySelector("body");
+  
   function submitAnswersOnVisibilityChange() {
       body.onkeydown = function () {
           return false
@@ -222,9 +265,16 @@ class ExamQuestions {
         clearInterval(myFunc);
             document.getElementById("timer").innerHTML = ""
             await exam.submitAnswers()
-            alert("Exam ended")
+            swal({
+              title: "Hey",
+              text: "Time has elasped. Thank you.",
+              icon: "warning",
+          }).then(() => {
+              window.location = "dashboard.html"
+          })
     }
     }, 1000)
   }
 
   submitAnswersWhenTimeEnds()
+
