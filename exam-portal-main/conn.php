@@ -6,10 +6,3 @@ try {
 } catch (PDOException $f) {
     echo 'Connection error: '.$f->getmessage();
 }
-
-//SMTP
-  define('M_HOST', 'smtp.gmail.com');
-  define('M_USERNAME', 'elearningshf@gmail.com');
-  define('M_PASSWORD', 'Myshf123@');
-  define('M_SMTPSECURE', 'ssl');
-  define('M_PORT', '465');
