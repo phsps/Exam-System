@@ -61,12 +61,11 @@
                       <i class="fas fa-arrow-right text-dark"></i>
                     </div>
                   </button>
-                  <button class="cssbuttons-io-button" id="submit"> <span>Submit</span>
-                    <div class="icon submit">
-                      <i class="fas fa-arrow-right text-dark"></i>
-                    </div>
-                  </button>
             </div>
+            <div class="d-flex justify-content-center mt-3">
+              <button class="submit-btn" id="submit">Submit</button>
+            </div>
+            
             <div class="trackers"></div>
             <!-- End of prev and next icons -->
             

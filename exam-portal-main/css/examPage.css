@@ -210,3 +210,16 @@ body{
   .box:hover {
     color: #f9f9f9;
   }
+
+  img.hidden{
+    display: none;
+  }
+
+  img.shown{
+    height: 50px;
+    width: 150px;
+  }
+  .submit-btn{
+    padding: 5px 15px;
+    border-radius: 5px;
+  }
