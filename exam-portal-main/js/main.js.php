@@ -159,6 +159,7 @@ class ExamQuestions {
 
         console.log(ans)
         try {
+          const response = await fetch(`api-endpoint?sub=${sub}&short=${short}`, {
               method: 'POST',
               headers: {
                   'Content-Type': 'application/json',
