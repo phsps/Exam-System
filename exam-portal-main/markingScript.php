@@ -8,8 +8,7 @@ $class = 'SSS Three';
 
 function tableByClassExam($class, $short)
 {
-    //switch($short)
-
+    
     if ($class == 'Pre Nursery') {
         $table = 'exam_pn_'.$short;
     } elseif ($class == 'Nursery One') {
@@ -47,6 +46,7 @@ function tableByClassExam($class, $short)
 }
 
 $table = tableByClassExam($class,$short);
+
 $chosen = [];
 $correct = [];
 $marks = 0;
@@ -63,39 +63,50 @@ if ($postData) {
   if (isset($data['answers'])) {
 
     foreach ($data['answers'] as $answer) {
-        array_push($chosen, $answer);
+
+        echo $answer;
+        if($answer == "null")
+            $answer = 1000;
+
+        array_push($chosen, substr($answer, 3));
       }
 
-    for($i = 0; $i <= count($chosen)-1; $i++ ){
+      
+
+    for($i = 1; $i <= count($chosen); $i++ ){
        
         $select=$pdo->prepare("SELECT ans FROM `$table` WHERE name='e$i'");
         $select->execute();
-        $row=$select->fetch(PDO::FETCH_OBJ);
-        $ans = $row->ans;
+        $row=$select->fetch(PDO::FETCH_ASSOC);
+        $ans = $row["ans"];
         
-        array_push($correct, $ans);
+     array_push($correct, $ans);
 
+    }
+
+    for($i = 0; $i < count($chosen); $i++)
+    {
         if($chosen[$i] == $correct[$i]){
             $marks++;
         }
     }
 
-    $marksExam = $marks;
+   
     
-    $percentageExamx = ($marksExam /50) * 100;
+    $percentageExamx = ($marks /count($correct)) * 100;
     $percentageExam = round($percentageExamx);
     
     
     $session    = '2022/2023';
     $term       = 'First';
     $tyme2      = date('Y-m-d H:i:s');
-    $sscode = 'EarlSamm';
+    //$sscode = 'EarlSamm';
     
     
-    $sql2="INSERT INTO (mark,percent,tyme,subject) VALUES (:aa, :bb, :cc, :dd)";
+    $sql2="INSERT INTO result_cbt (marks,percent,tyme,subjects) VALUES (:aa, :bb, :cc, :dd)";
     $update=$pdo->prepare($sql2); 
         
-        $update->bindParam(':aa',$marksExam);
+        $update->bindParam(':aa',$marks);
         $update->bindParam(':bb',$percentageExam);
         $update->bindParam(':cc',$tyme2);
         $update->bindParam(':dd',$subject);
@@ -104,7 +115,7 @@ if ($postData) {
         
     if($update->execute()){
     
-        echo "Submitted Successfully";
+        echo "ok";
     }
 // Here
   } else {
