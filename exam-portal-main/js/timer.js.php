@@ -2,8 +2,8 @@
 
 ?>
 <script>
-let startTimeString = Date.parse("November 27, 2023 13:20:00")
-let finishTimeString = Date.parse("November 30, 2023 23:50:00");
+let startTimeString = Date.parse("December 9, 2023 13:20:00")
+let finishTimeString = Date.parse("December 30, 2023 23:50:00");
 
 
 

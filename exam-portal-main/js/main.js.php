@@ -3,15 +3,11 @@ $exam_tyme = 10;
 ?>
 
 <script>
-const SetOptionNull =  () => {
-  for(let i = 1; i <= 50; i++ ) {
-    localStorage.setItem(`e${i}`, null)
-  }  
-}
 
-SetOptionNull()
+const searchParams = new URLSearchParams(window.location.search);
 
-
+let sub = searchParams.get("sub")
+let short = searchParams.get("short")
 const content = document.getElementById("content");
 
 class ExamQuestions {
@@ -33,7 +29,9 @@ class ExamQuestions {
       // Event listeners
       this.nextButton.addEventListener('click', this.nextQuestion.bind(this));
       this.prevButton.addEventListener('click', this.prevQuestion.bind(this));
-      this.submit.addEventListener("click", this.submitAnswers.bind(this));
+      this.submit.addEventListener("click", () => {
+        this.submitAnswers(sub, short)
+      });
     }
 
   
@@ -43,9 +41,9 @@ class ExamQuestions {
         const response = await fetch(`./examQuestions?sub=${sub}&short=${short}`); //api/ques?sub=${sub}&short=${short}
         console.log(response)
         this.data = await response.json();
-        if (this.data.length == 0) {
-
-        }else{
+        this.setOptionNull(this.data.length);
+ 
+        if (this.data.length != 0) {
           const question = this.data[this.currentIndex];
 
           this.displayQuestion(question)
@@ -57,7 +55,6 @@ class ExamQuestions {
               this.jumpToQuestion(e.target.value, quesNo)
             })
           })
-
         }
         
       } catch (error) {
@@ -66,7 +63,11 @@ class ExamQuestions {
     }
 
    
-
+    setOptionNull(length) {
+      for(let i = 1; i <= length; i++ ) {
+        localStorage.setItem(`e${i}`, null)
+      }
+    }
     
 
     setValue(key, value) {
@@ -117,6 +118,12 @@ class ExamQuestions {
         <div class="exam__questions">
           <div><h6 class="question__number">Question ${question.tid}</h6></div>
           <p class="question__text">${question.qst}</p>
+          <p class="question__text">${question?.qst ? question.psg : ""}</p>
+          <img 
+            src="${question.img}" 
+            alt="question-img" 
+            class="${question?.img == "" ? "hidden": "shown"}" 
+          />
           <hr>
           <div class="options">
             ${this.generateOptionsHTML()}
@@ -143,27 +150,27 @@ class ExamQuestions {
       }
     }
 
-    async submitAnswers() {
+    async submitAnswers(sub, short) {
         let ans = [] // ["building", 100001, 23e3]
-        for(let i = 1; i <= 50; i++) {
+        for(let i = 1; i <= this.data.length; i++) {
           let value = localStorage.getItem(`e${i}`)
           ans.push(value)
         }
 
         console.log(ans)
         try {
-          const response = await fetch('your-api-endpoint', {
+          const response = await fetch(`./markingScript?sub=${sub}&short=${short}`, {
               method: 'POST',
               headers: {
                   'Content-Type': 'application/json',
               },
-              body: JSON.stringify({ answers: ans }),
+              body: JSON.stringify({answers: ans})
           });
   
-          const data = await response.json();
-          for(let i = 1; i <=  ans.length; i++) {
-            localStorage.removeItem(`e${i}`)
-          }
+          const data = await response.text();
+          // for(let i = 1; i <= ans.length; i++) {
+          //   localStorage.removeItem(`e${i}`)
+          // }
 
           console.log(data);
         } catch (err) {
@@ -217,10 +224,6 @@ class ExamQuestions {
   }
   
   const exam = new ExamQuestions();
-  const searchParams = new URLSearchParams(window.location.search);
-
-  let sub = searchParams.get("sub")
-  let short = searchParams.get("short")
 
   exam.loadQuestions(sub, short);
 
@@ -233,7 +236,7 @@ class ExamQuestions {
       document.addEventListener("visibilitychange", async function () {
         
           if (document.visibilityState === "hidden") {
-              await exam.submitAnswers()
+              await exam.submitAnswers(sub, short)
               swal({
                   title: "Security Error",
                   text: "You can't access the page anymore, you data has been submitted successfully",
@@ -263,7 +266,7 @@ class ExamQuestions {
         if (timeLeft <= 0 ) {
         clearInterval(myFunc);
             document.getElementById("timer").innerHTML = ""
-            await exam.submitAnswers()
+            await exam.submitAnswers(sub, short)
             swal({
               title: "Hey",
               text: "Time has elasped. Thank you.",
