@@ -1,1 +1,113 @@
-markingScript
+<?php
+
+require_once 'conn.php';
+
+$subject = $_GET['sub'];
+$short = $_GET['short'];
+$class = 'SSS Three';
+
+function tableByClassExam($class, $short)
+{
+    if ($class == 'Pre Nursery') {
+        $table = 'exam_pn_'.$short;
+    } elseif ($class == 'Nursery One') {
+        $table = 'exam_n1_'.$short;
+    } elseif ($class == 'Nursery Two') {
+        $table = 'exam_n2_'.$short;
+    } elseif ($class == 'Basic One') {
+        $table = 'exam_p1_'.$short;
+    } elseif ($class == 'Basic Two') {
+        $table = 'exam_p2_'.$short;
+    } elseif ($class == 'Basic Three') {
+        $table = 'exam_p3_'.$short;
+    } elseif ($class == 'Basic Four') {
+        $table = 'exam_p4_'.$short;
+    } elseif ($class == 'Basic Five') {
+        $table = 'exam_p5_'.$short;
+    } elseif ($class == 'Basic Six') {
+        $table = 'exam_p6_'.$short;
+    } elseif ($class == 'JSS One') {
+        $table = 'exam_j1_'.$short;
+    } elseif ($class == 'JSS Two') {
+        $table = 'exam_j2_'.$short;
+    } elseif ($class == 'JSS Three') {
+        $table = 'exam_j3_'.$short;
+    } elseif ($class == 'SSS One') {
+        $table = 'exam_s1_'.$short;
+    } elseif ($class == 'SSS Two') {
+        $table = 'exam_s2_'.$short;
+    } elseif ($class == 'SSS Three') {
+        $table = 'exam_s3_'.$short;
+    } else {
+    }
+
+    return $table;
+}
+
+$table = tableByClassExam($class,$short);
+$chosen = [];
+$correct = [];
+$marks = 0;
+
+// Retrieve the posted data
+$postData = file_get_contents('php://input');
+
+// If data was posted
+if ($postData) {
+  // Decode JSON data to a PHP array
+  $data = json_decode($postData, true);
+
+  // Process the received questions (in this case, just printing for demonstration)
+  if (isset($data['answers'])) {
+
+    foreach ($data['answers'] as $answer) {
+        array_push($chosen, $answer);
+      }
+
+    for($i = 0; $i <= count($chosen)-1; $i++ ){
+       
+        $select=$pdo->prepare("SELECT ans FROM `$table` WHERE name='e$i'");
+        $select->execute();
+        $row=$select->fetch(PDO::FETCH_OBJ);
+        $ans = $row->ans;
+        
+        array_push($correct, $ans);
+
+        if($chosen[$i] == $correct[$i]){
+            $marks++;
+        }
+    }
+
+    $marksExam = $marks;
+    
+    $percentageExamx = ($marksExam /50) * 100;
+    $percentageExam = round($percentageExamx);
+    
+    
+    $session    = '2022/2023';
+    $term       = 'First';
+    $tyme2      = date('Y-m-d H:i:s');
+    $sscode = 'EarlSamm';
+    
+    
+    $sql2="INSERT INTO (mark,percent,tyme,subject) VALUES (:aa, :bb, :cc, :dd)";
+    $update=$pdo->prepare($sql2); 
+        
+        $update->bindParam(':aa',$marksExam);
+        $update->bindParam(':bb',$percentageExam);
+        $update->bindParam(':cc',$tyme2);
+        $update->bindParam(':dd',$subject);
+       
+        
+        
+    if($update->execute()){
+    
+        echo "Submitted Successfully";
+    }
+// Here
+  } else {
+    echo "No answers received";
+  }
+} else {
+  echo "No data received";
+}

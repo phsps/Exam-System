@@ -159,18 +159,12 @@ class ExamQuestions {
 
         console.log(ans)
         try {
-          const response = await fetch(`api-endpoint?sub=${sub}&short=${short}`, {
               method: 'POST',
               headers: {
                   'Content-Type': 'application/json',
               },
-              body: JSON.stringify({ answers: ans }),
+              body: JSON.stringify({answers: ans})
           });
-  
-          const data = await response.json();
-          for(let i = 1; i <= ans.length; i++) {
-            localStorage.removeItem(`e${i}`)
-          }
 
           console.log(data);
         } catch (err) {
