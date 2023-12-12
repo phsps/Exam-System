@@ -42,7 +42,7 @@ class ExamQuestions {
         console.log(response)
         this.data = await response.json();
         this.setOptionNull(this.data.length);
- 
+
         if (this.data.length != 0) {
           const question = this.data[this.currentIndex];
 
@@ -159,18 +159,12 @@ class ExamQuestions {
 
         console.log(ans)
         try {
-          const response = await fetch(`./markingScript?sub=${sub}&short=${short}`, {
               method: 'POST',
               headers: {
                   'Content-Type': 'application/json',
               },
               body: JSON.stringify({answers: ans})
           });
-  
-          const data = await response.text();
-          // for(let i = 1; i <= ans.length; i++) {
-          //   localStorage.removeItem(`e${i}`)
-          // }
 
           console.log(data);
         } catch (err) {
@@ -185,19 +179,19 @@ class ExamQuestions {
         const options = `
         <label for="option1__ques${this.data[this.currentIndex].tid}" class="option lbl__option__1">
             <span id="option1__detail">${this.data[this.currentIndex].opt1}</span> 
-            <input type="radio" name="${this.data[this.currentIndex].name}" id="option1__ques${this.data[this.currentIndex].tid}" class="radio__option" value="${this.data[this.currentIndex].opt1}">
+            <input type="radio" name="${this.data[this.currentIndex].name}" id="option1__ques${this.data[this.currentIndex].tid}" class="radio__option" value="opt1">
         </label>
         <label for="option2__ques${this.data[this.currentIndex].tid}" class="option" class="option lbl__option__2">
             <span id="option2__detail">${this.data[this.currentIndex].opt2}</span>
-            <input type="radio" name="${this.data[this.currentIndex].name}" id="option2__ques${this.data[this.currentIndex].tid}" class="radio__option" value="${this.data[this.currentIndex].opt2}">
+            <input type="radio" name="${this.data[this.currentIndex].name}" id="option2__ques${this.data[this.currentIndex].tid}" class="radio__option" value="opt2">
         </label>
         <label for="option3__ques${this.data[this.currentIndex].tid}" class="option" class="option lbl__option__3">
             <span id="option3__detail">${this.data[this.currentIndex].opt3}</span>
-            <input type="radio" name="${this.data[this.currentIndex].name}" id="option3__ques${this.data[this.currentIndex].tid}" class="radio__option" value="${this.data[this.currentIndex].opt3}">
+            <input type="radio" name="${this.data[this.currentIndex].name}" id="option3__ques${this.data[this.currentIndex].tid}" class="radio__option" value="opt3">
         </label>
         <label for="option4__ques${this.data[this.currentIndex].tid}" class="option" class="option lbl__option__4">
             <span id="optio4__detail">${this.data[this.currentIndex].opt4}</span>
-            <input type="radio" name="${this.data[this.currentIndex].name}" id="option4__ques${this.data[this.currentIndex].tid}" class="radio__option" value="${this.data[this.currentIndex].opt4}">
+            <input type="radio" name="${this.data[this.currentIndex].name}" id="option4__ques${this.data[this.currentIndex].tid}" class="radio__option" value="opt4">
         </label>
         
         `
@@ -215,7 +209,8 @@ class ExamQuestions {
 
     getOption(e) {
       let name = e.target.name
-      let value = e.target.value     
+      let value = e.target.value  
+      console.log("Value",value)   
 
       this.setValue(name, value)
       let tracker = document.getElementById(`tracker-${name}`)
