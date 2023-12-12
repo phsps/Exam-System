@@ -8,6 +8,8 @@ $class = 'SSS Three';
 
 function tableByClassExam($class, $short)
 {
+    //switch($short)
+
     if ($class == 'Pre Nursery') {
         $table = 'exam_pn_'.$short;
     } elseif ($class == 'Nursery One') {
