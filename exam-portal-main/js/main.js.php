@@ -30,7 +30,7 @@ class ExamQuestions {
       this.nextButton.addEventListener('click', this.nextQuestion.bind(this));
       this.prevButton.addEventListener('click', this.prevQuestion.bind(this));
       this.submit.addEventListener("click", () => {
-        this.submitAnswers(sub, short)
+        this.submitAnswers(sub, short, "Data Submitted", "Your answers has been submitted successfully", "success")
       });
     }
 
@@ -39,7 +39,6 @@ class ExamQuestions {
       try {
 
         const response = await fetch(`./examQuestions?sub=${sub}&short=${short}`); //api/ques?sub=${sub}&short=${short}
-        console.log(response)
         this.data = await response.json();
         this.setOptionNull(this.data.length);
 
@@ -150,14 +149,12 @@ class ExamQuestions {
       }
     }
 
-    async submitAnswers(sub, short) {
+    async submitAnswers(sub, short, title, text, icon) {
         let ans = [] // ["building", 100001, 23e3]
         for(let i = 1; i <= this.data.length; i++) {
           let value = localStorage.getItem(`e${i}`)
           ans.push(value)
         }
-
-        console.log(ans)
         try {
           const response = await fetch(`markingScript?sub=${sub}&short=${short}`, {
               method: 'POST',
@@ -167,11 +164,26 @@ class ExamQuestions {
               body: JSON.stringify({answers: ans})
           });
           
-          let data = await response.text()
+          let status = await response.text()
 
-          console.log(data);
+          if (status == "ok") {
+            for(let i = 1; i <= this.data.length; i++) {
+              localStorage.removeItem(`e${i}`)
+            }
+            swal({
+              title: title,
+              text: text,
+              icon: icon,
+            }).then(() => {
+              window.location ="./"
+            })
+          }
         } catch (err) {
-            console.error('Error:', err);
+            swal({
+              title: "Error",
+              text: "An error occurred from our server, hold on and try again.",
+              icon: "error",
+            })
         }
         
       }
@@ -212,8 +224,7 @@ class ExamQuestions {
 
     getOption(e) {
       let name = e.target.name
-      let value = e.target.value  
-      console.log("Value",value)   
+      let value = e.target.value   
 
       this.setValue(name, value)
       let tracker = document.getElementById(`tracker-${name}`)
@@ -234,15 +245,7 @@ class ExamQuestions {
       document.addEventListener("visibilitychange", async function () {
         
           if (document.visibilityState === "hidden") {
-              await exam.submitAnswers(sub, short)
-              swal({
-                  title: "Security Error",
-                  text: "You can't access the page anymore, you data has been submitted successfully",
-                  icon: "error",
-              }).then(() => {
-                  window.location = "dashboard.html"
-              })
-              
+              await exam.submitAnswers(sub, short, "Security Error", "You can't access the page anymore, you data has been submitted successfully", "error")
           }
       })
   }
@@ -264,14 +267,7 @@ class ExamQuestions {
         if (timeLeft <= 0 ) {
         clearInterval(myFunc);
             document.getElementById("timer").innerHTML = ""
-            await exam.submitAnswers(sub, short)
-            swal({
-              title: "Hey",
-              text: "Time has elasped. Thank you.",
-              icon: "warning",
-          }).then(() => {
-              window.location = "dashboard.html"
-          })
+            await exam.submitAnswers(sub, short, "Hey?", "Time has elasped. Thank you.", "warning")
     }
     }, 1000)
   }
