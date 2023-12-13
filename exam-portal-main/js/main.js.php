@@ -159,13 +159,15 @@ class ExamQuestions {
 
         console.log(ans)
         try {
-          const response = await fetch(`api-endpoint?sub=${sub}&short=${short}`, {
+          const response = await fetch(`markingScript?sub=${sub}&short=${short}`, {
               method: 'POST',
               headers: {
                   'Content-Type': 'application/json',
               },
               body: JSON.stringify({answers: ans})
           });
+          
+          let data = await response.text()
 
           console.log(data);
         } catch (err) {

@@ -8,45 +8,63 @@ $class = 'SSS Three';
 
 function tableByClassExam($class, $short)
 {
-    //switch($short)
 
-    if ($class == 'Pre Nursery') {
-        $table = 'exam_pn_'.$short;
-    } elseif ($class == 'Nursery One') {
-        $table = 'exam_n1_'.$short;
-    } elseif ($class == 'Nursery Two') {
-        $table = 'exam_n2_'.$short;
-    } elseif ($class == 'Basic One') {
-        $table = 'exam_p1_'.$short;
-    } elseif ($class == 'Basic Two') {
-        $table = 'exam_p2_'.$short;
-    } elseif ($class == 'Basic Three') {
-        $table = 'exam_p3_'.$short;
-    } elseif ($class == 'Basic Four') {
-        $table = 'exam_p4_'.$short;
-    } elseif ($class == 'Basic Five') {
-        $table = 'exam_p5_'.$short;
-    } elseif ($class == 'Basic Six') {
-        $table = 'exam_p6_'.$short;
-    } elseif ($class == 'JSS One') {
-        $table = 'exam_j1_'.$short;
-    } elseif ($class == 'JSS Two') {
-        $table = 'exam_j2_'.$short;
-    } elseif ($class == 'JSS Three') {
-        $table = 'exam_j3_'.$short;
-    } elseif ($class == 'SSS One') {
-        $table = 'exam_s1_'.$short;
-    } elseif ($class == 'SSS Two') {
-        $table = 'exam_s2_'.$short;
-    } elseif ($class == 'SSS Three') {
-        $table = 'exam_s3_'.$short;
-    } else {
-    }
+    switch ($class) {
 
+        case 'Pre Nursery':
+            $table = 'exam_pn_'.$short;
+            break;
+        case 'Nursery One':
+            $table = 'exam_n1_'.$short;
+            break;
+        case 'Nursery Two':
+            $table = 'exam_n2_'.$short;
+            break;
+        case 'Basic One':
+            $table = 'exam_p1_'.$short;
+            break;
+        case 'Basic Two':
+            $table = 'exam_p2_'.$short;
+            break;
+        case 'Basic Three':
+            $table = 'exam_p3_'.$short;
+            break;
+        case 'Basic Four':
+            $table = 'exam_p4_'.$short;
+            break;
+        case 'Basic Five':
+            $table = 'exam_p5_'.$short;
+            break;
+        case 'Basic Six':
+            $table = 'exam_p6_'.$short;
+            break;
+        case 'JSS One':
+            $table = 'exam_j1_'.$short;
+            break;
+        case 'JSS Two':
+            $table = 'exam_j2_'.$short;
+            break;
+        case 'JSS Three':
+            $table = 'exam_j3_'.$short;
+            break;
+        case 'SSS One':
+            $table = 'exam_s1_'.$short;
+            break;
+        case 'SSS Two':
+            $table = 'exam_s2_'.$short;
+            break;
+        case 'SSS Three':
+            $table = 'exam_s3_'.$short;
+            break;
+          default:
+          $table ='';
+      }
+      
     return $table;
 }
 
 $table = tableByClassExam($class,$short);
+
 $chosen = [];
 $correct = [];
 $marks = 0;
@@ -63,39 +81,50 @@ if ($postData) {
   if (isset($data['answers'])) {
 
     foreach ($data['answers'] as $answer) {
-        array_push($chosen, $answer);
+
+        echo $answer;
+        if($answer == "null")
+            $answer = 1000;
+
+        array_push($chosen, substr($answer, 3));
       }
 
-    for($i = 0; $i <= count($chosen)-1; $i++ ){
+      
+
+    for($i = 1; $i <= count($chosen); $i++ ){
        
         $select=$pdo->prepare("SELECT ans FROM `$table` WHERE name='e$i'");
         $select->execute();
-        $row=$select->fetch(PDO::FETCH_OBJ);
-        $ans = $row->ans;
+        $row=$select->fetch(PDO::FETCH_ASSOC);
+        $ans = $row["ans"];
         
-        array_push($correct, $ans);
+     array_push($correct, $ans);
 
+    }
+
+    for($i = 0; $i < count($chosen); $i++)
+    {
         if($chosen[$i] == $correct[$i]){
             $marks++;
         }
     }
 
-    $marksExam = $marks;
+   
     
-    $percentageExamx = ($marksExam /50) * 100;
+    $percentageExamx = ($marks /count($correct)) * 100;
     $percentageExam = round($percentageExamx);
     
     
     $session    = '2022/2023';
     $term       = 'First';
     $tyme2      = date('Y-m-d H:i:s');
-    $sscode = 'EarlSamm';
+    //$sscode = 'EarlSamm';
     
     
-    $sql2="INSERT INTO (mark,percent,tyme,subject) VALUES (:aa, :bb, :cc, :dd)";
+    $sql2="INSERT INTO result_cbt (marks,percent,tyme,subjects) VALUES (:aa, :bb, :cc, :dd)";
     $update=$pdo->prepare($sql2); 
         
-        $update->bindParam(':aa',$marksExam);
+        $update->bindParam(':aa',$marks);
         $update->bindParam(':bb',$percentageExam);
         $update->bindParam(':cc',$tyme2);
         $update->bindParam(':dd',$subject);
@@ -104,7 +133,7 @@ if ($postData) {
         
     if($update->execute()){
     
-        echo "Submitted Successfully";
+        echo "ok";
     }
 // Here
   } else {
