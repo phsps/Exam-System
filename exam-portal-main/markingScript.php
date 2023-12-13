@@ -82,7 +82,6 @@ if ($postData) {
 
     foreach ($data['answers'] as $answer) {
 
-        echo $answer;
         if($answer == "null")
             $answer = 1000;
 
@@ -128,8 +127,6 @@ if ($postData) {
         $update->bindParam(':bb',$percentageExam);
         $update->bindParam(':cc',$tyme2);
         $update->bindParam(':dd',$subject);
-       
-        
         
     if($update->execute()){
     
