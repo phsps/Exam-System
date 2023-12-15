@@ -170,6 +170,12 @@ class ExamQuestions {
             for(let i = 1; i <= this.data.length; i++) {
               localStorage.removeItem(`e${i}`)
             }
+            
+            let allChecked = document.querySelectorAll(`.checked`)
+            allChecked.forEach(tracker => {
+              tracker.classList.remove("checked")
+            })
+            
             swal({
               title: title,
               text: text,
