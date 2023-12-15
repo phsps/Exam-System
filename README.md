@@ -53,5 +53,5 @@ This project is licensed under the [MIT License](LICENSE).
 
 For any inquiries or support, please contact:
 
-- Lawrence Segun
-- Email: [lawrencesegun025@gmail.com](mailto:lawrencesegun025@gmail.com)
+- Phsps Apps
+- Email: [support@phsps.com](mailto:support@phsps.com)
