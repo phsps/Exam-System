@@ -51,5 +51,7 @@ This project is licensed under the [MIT License](LICENSE).
 
 ## Contact
 
-For any inquiries or support, please contact [Lawrence Segun] at [lawrencesegun025@gmail.com].
+For any inquiries or support, please contact:
 
+- Lawrence Segun
+- Email: [lawrencesegun025@gmail.com](mailto:lawrencesegun025@gmail.com)
