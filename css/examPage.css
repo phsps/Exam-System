@@ -10,24 +10,17 @@
 }
 
 body{
-    background-image: linear-gradient(to bottom, #7b4eef, #9c7df7);
+    background-image: linear-gradient(to bottom, #7b4eef, #c5b6f1);
     background-repeat: no-repeat;
-    height: 100%;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
     transition: all 0.5s ease;
 }
 
 
 .exam__content{
-    height: 100vh !important;
     width: 100%;
     background-color: #ffffff;
     border-radius: 15px;
-    padding: 10px 50px;
+    padding: 0px 10px;
 }
 
 .exam__brand h6{
@@ -36,7 +29,7 @@ body{
 }
 
 .exam__questions {
-    height: 40vh;
+    /* height: 40vh; */
     width: 100%;
     background-color: #fcfbfc;
     margin-top: 20px;
@@ -79,12 +72,14 @@ body{
     justify-content: space-around;
 }
 
-#myProgress {
+#subject_name {
     position: absolute;
     left: 30%;
     width: 211px;
     background-color: #ddd;
-    border-radius:50px;
+    border-radius:5px;
+    display: flex;
+    justify-content: center;
     margin-left: 0;
   }
   
@@ -105,7 +100,7 @@ body{
   }
 
   @media (max-width:767px) {
-      #myProgress{
+      #subject_name{
           display: none;
       }
       .exam__brand{
@@ -118,20 +113,20 @@ body{
 
   @media (max-width:476px) {
       .exam__questions{
-          height: 55vh;
+          /* height: 55vh; */
           padding: 3px 5px;
       }
   }
 
   @media (max-width:428px) {
       .exam__content{
-          height: 78vh;
+          /* height: 78vh; */
       }
   }
 
   @media (max-width: 358px) {
       .exam__content{
-          height: 80vh;
+          /* height: 80vh; */
       }
       .prev__next{
         display: block;
@@ -142,7 +137,7 @@ body{
   }
   @media (max-width:335px) {
       .exam__questions{
-          height: 58vh;
+          /* height: 58vh; */
       }
   }
 
@@ -150,7 +145,7 @@ body{
       .exam__content{
           margin-top: 100px;
           margin-bottom: 100px;       
-          height: 95vh;
+          /* height: 95vh; */
       }
       .prev__next{
           margin-top: 100px !important;

@@ -21,12 +21,17 @@
 
                 <!-- This is the page navbar -->
                 <div class="exam__nav">
-                    <div class="exam__brand mt-4"><h6>Able Exam</h6></div>
+                    <div class="exam__brand mt-4"><h6>
+                      <?php echo "Lawrence Segun" ?>
+                    </h6></div>
                     <div class="exam__details">
                        <div class="exam__progress mt-4">
-                        <div id="myProgress">
-                            <div id="myBar"></div>
-                          </div>
+                        <div id="subject_name">
+                            <?php
+                              $subject = "Physics";
+                              echo $subject;
+                            ?>
+                        </div>
                        </div>
                        <div>
                         <button class="btn review__btn mt-3"> review</button>
