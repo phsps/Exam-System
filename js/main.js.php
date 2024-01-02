@@ -117,7 +117,7 @@ class ExamQuestions {
         <div class="exam__questions">
           <div><h6 class="question__number">Question ${question.tid}</h6></div>
           <p class="question__text">${question.qst}</p>
-          <p class="question__text">${question?.qst ? question.psg : ""}</p>
+          <p class="question__passage">${question?.qst ? question.psg : ""}</p>
           <img 
             src="${question.img}" 
             alt="question-img" 

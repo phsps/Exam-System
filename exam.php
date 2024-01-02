@@ -9,16 +9,12 @@
     <link rel="stylesheet" href="./css/mdb.min.css">
     <link rel="stylesheet" href="./css/prev&next.css">
     <link rel="stylesheet" href="./css/examPage.css">
-    <title>Document</title>
+    <title>Examination </title>
 </head>
 <body>
-  
-    <div class="container">
-            
-
+  <div class="container">
         <div class="exam__content">
             <div class="container">
-
                 <!-- This is the page navbar -->
                 <div class="exam__nav">
                     <div class="exam__brand mt-4"><h6>
@@ -34,7 +30,7 @@
                         </div>
                        </div>
                        <div>
-                        <button class="btn review__btn mt-3"> review</button>
+                        <img src="./images/avatar-5.webp"  alt="student photo" class="student_photo mt-2">
                        </div>
                     <div class="vertical__line"></div>
                     <div class="exam__timer mt-3">
@@ -77,8 +73,6 @@
         </div>
 
     </div>
-
-
     
     <script src="./js/jquery.js"></script>
     <script src="./js/bootstrap.min.js"></script>
