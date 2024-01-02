@@ -3,7 +3,7 @@
 ?>
 <script>
 let startTimeString = Date.parse("December 9, 2023 13:20:00")
-let finishTimeString = Date.parse("December 30, 2023 23:50:00");
+let finishTimeString = Date.parse("January 30, 2024 23:50:00");
 
 
 
